@@ -113,7 +113,8 @@ jobs:
       # Copy the files from build folder to the S3 bucket
       - name: Upload to blob storage
         uses: azure/CLI@v1
-        with: azcliversion: 2.0.72
-        inlineScript: |
+        with: 
+          azcliversion: 2.0.72
+          inlineScript: |
             az storage blob upload-batch --account-name webjetmoviessdh -d '$web' -s
         working-directory: react-github-actions-build
