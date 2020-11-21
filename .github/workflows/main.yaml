@@ -110,4 +110,4 @@ jobs:
         with:
           azcliversion: 2.0.72
           inlineScript: |
-            az storage blob upload-batch --account-name webjetmoviessdh -d '$web' -s
+            az storage blob upload-batch --account-name webjetmoviessdh -s ./build -d '$web' -s
