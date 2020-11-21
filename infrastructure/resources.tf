@@ -111,7 +111,7 @@ resource "azurerm_cdn_endpoint" "example" {
   resource_group_name = azurerm_resource_group.rg.name
 
   origin {
-    name      = "Webjet movies blob"
+    name      = "webjetmoviesblob"
     host_name = "${var.appname}sdh.z8.web.core.windows.net"
   }
 }
