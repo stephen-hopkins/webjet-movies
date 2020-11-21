@@ -49,6 +49,23 @@ locals {
 ###
 ######################################################################
 
+terraform {
+  required_providers {
+    aws = {
+      source = "hashicorp/azurerm"
+    }
+  }
+
+  backend "remote" {
+    organization = "stephen-hopkins"
+
+    workspaces {
+      name = "webjet-movies"
+    }
+  }
+}
+
+
 provider "azurerm" {
   version         = ">= 2.3.0"
   tenant_id       = "${var.tenant_id}"
