@@ -50,12 +50,6 @@ locals {
 ######################################################################
 
 terraform {
-  required_providers {
-    aws = {
-      source = "hashicorp/azurerm"
-    }
-  }
-
   backend "remote" {
     organization = "stephen-hopkins"
 
