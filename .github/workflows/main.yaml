@@ -116,7 +116,7 @@ jobs:
         with:
           azcliversion: 2.0.72
           inlineScript: |
-            az cdn endpoint purge --content-paths  "/*" --profile-name "webjetmoviessdh" --name "webjetmoviessdh" --resource-group "webjetmoviessdh-dev"
+            az cdn endpoint purge --content-paths  "/*" --profile-name "webjetmoviessdh" --name "webjetmoviessdh" --resource-group "webjetmovies-dev"
         # Azure logout
       - name: logout
         run: |
