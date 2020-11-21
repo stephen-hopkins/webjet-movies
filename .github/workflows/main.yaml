@@ -111,3 +111,13 @@ jobs:
           azcliversion: 2.0.72
           inlineScript: |
             az storage blob upload-batch --account-name webjetmoviessdh -d '$web' -s .
+      - name: Azure CLI script
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.0.72
+          inlineScript: |
+            az cdn endpoint purge --content-paths  "/*" --profile-name "webjetmoviessdh" --name "webjetmoviessdh" --resource-group "webjetmoviessdh-dev"
+        # Azure logout
+      - name: logout
+        run: |
+          az logout

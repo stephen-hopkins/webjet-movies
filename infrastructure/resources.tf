@@ -96,3 +96,22 @@ resource "azurerm_storage_account" "storage" {
     index_document = "index.html"
   }
 }
+
+resource "azurerm_cdn_profile" "cdn" {
+  name                = "${var.appname}sdh"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  sku                 = "Standard_Microsoft"
+}
+
+resource "azurerm_cdn_endpoint" "example" {
+  name                = "${var.appname}sdh"
+  profile_name        = azurerm_cdn_profile.cdn.name
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+
+  origin {
+    name      = "Webjet movies blob"
+    host_name = "${var.appname}sdh.z8.web.core.windows.net"
+  }
+}
