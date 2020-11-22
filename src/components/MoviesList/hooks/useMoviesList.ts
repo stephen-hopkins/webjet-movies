@@ -1,43 +1,56 @@
 import { useQuery } from "react-query";
-import { MovieSummary } from "../../../models/MovieSummary";
-import axios from "axios";
+import { MovieSummaries, MovieSummary } from "models/MovieSummary";
+import { fetchMovieList, MovieProvider } from "helpers/MovieApi";
+import { useMemo } from "react";
 
 export default function useMoviesList() {
-  const { data: cinemaMovies } = useQuery<MovieSummary[], Error>(
-    "cinemaList",
-    fetchCinemaWorldMovies
+  const { data: cinemaMovies, error: cinemaMoviesError, isSuccess: cinemaMoviesSuccess } = useQuery<MovieSummaries, Error>(
+    ...fetchMovieList('cinemaworld')
   );
-  const { data: filmWorldMovies } = useQuery<MovieSummary[], Error>(
-    "filmList",
-    fetchFilmWorldMovies
+
+  const { data: filmWorldMovies, error: filmMoviesError, isSuccess: filmMoviesSuccess } = useQuery<MovieSummaries, Error>(
+    ...fetchMovieList('filmworld')
   );
+
+  const allMovies = useMemo(() => {
+    // assumption - movie ids match from the 2 services (excl first 2 letters)
+    const added = new Set();
+    const results = [] as MovieSummary[]
+    [cinemaMovies, filmWorldMovies].forEach(ms => {
+      ms?.Movies.forEach(m => {
+        const commonId = m.ID.substr(2);
+        if (!added.has(commonId)) {
+          results.push(m);
+          added.add(commonId);
+        }
+      })
+    })
+    return results;
+  }, [cinemaMovies, filmWorldMovies])
+
+  const loadingPercent = useMemo(() => {
+    let success = 0;
+    [cinemaMoviesSuccess, filmMoviesSuccess].forEach(s => {
+      if (s) {
+        success++;
+      }
+    });
+    return (success / 2) * 100;
+  }, [cinemaMoviesSuccess, filmMoviesSuccess])
+
+  const errors = useMemo(() => {
+    let errors = [] as MovieProvider[];
+    if (cinemaMoviesError) {
+      errors.push('cinemaworld')
+    }
+    if (filmMoviesError) {
+      errors.push('filmworld')
+    }
+  }, [cinemaMoviesError, filmMoviesError])
 
   return {
-    cinemaMovies,
-    filmWorldMovies,
+    allMovies,
+    loadingPercent,
+    errors
   };
 }
-
-const fetchCinemaWorldMovies = async () => {
-  const result = await axios.get<MovieSummary[]>(
-    "https://webjetapitest.azurewebsites.net/api/cinemaworld/movies",
-    {
-      headers: {
-        "x-access-token": "sjd1HfkjU83ksdsm3802k",
-      },
-    }
-  );
-  return result.data;
-};
-
-const fetchFilmWorldMovies = async () => {
-  const result = await axios.get<MovieSummary[]>(
-    "https://webjetapitest.azurewebsites.net/api/filmworld/movies",
-    {
-      headers: {
-        "x-access-token": "sjd1HfkjU83ksdsm3802k",
-      },
-    }
-  );
-  return result.data;
-};

@@ -1,4 +1,6 @@
-export type MovieDetail = {
+import { MovieProvider } from "helpers/MovieApi";
+
+type MovieDetailDTO = {
   Title: string;
   Year: string;
   Rated: string;
@@ -17,5 +19,9 @@ export type MovieDetail = {
   Votes: string;
   ID: string;
   Type: string;
-  Price: string;
+  Price: number;
 };
+
+export type MovieDetail = MovieDetailDTO & {
+  provider: MovieProvider
+}
