@@ -110,13 +110,13 @@ jobs:
         with:
           azcliversion: 2.0.72
           inlineScript: |
-            az storage blob upload-batch --account-name webjetmoviessdh -d '$web' -s .
+            az storage blob upload-batch --account-name webjetmoviessdh -d '$web' -s ./react-github-actions-build/
       - name: Purge endpoint
         uses: azure/CLI@v1
         with:
           azcliversion: 2.0.72
           inlineScript: |
-            az cdn endpoint purge --content-paths  "/*" --profile-name "webjetmoviessdh" --name "main" --resource-group "webjetmovies-dev"
+            az cdn endpoint purge --content-paths  "/*" --profile-name "webjetmoviessdh" --name "webjetmoviessdh" --resource-group "webjetmovies-dev"
         # Azure logout
       - name: logout
         run: |
