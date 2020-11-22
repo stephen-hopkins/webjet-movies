@@ -5,3 +5,7 @@ export type MovieSummary = {
   Poster: string;
   Title: string;
 };
+
+export type MovieSummaries = {
+  Movies: MovieSummary[]
+};
