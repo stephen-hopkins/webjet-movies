@@ -104,8 +104,8 @@ resource "azurerm_cdn_profile" "cdn" {
   sku                 = "Standard_Microsoft"
 }
 
-resource "azurerm_cdn_endpoint" "cdnendpoint" {
-  name                = "${var.appname}sdh"
+resource "azurerm_cdn_endpoint" "endpoint" {
+  name                = "main"
   profile_name        = azurerm_cdn_profile.cdn.name
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
